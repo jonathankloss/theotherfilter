@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The other filter</title>
+    <style media="screen">
+    body {
+      font-family: "Avenir Next", Helvetica, Tahoma, sans-serif;
+      font-size: 100%;
+      margin: 0;
+      padding: 0;
+      color: #000;
+    }
+
+    #wrapper {
+      margin-left: auto;
+      margin-right: auto;
+      width: 75%;
+      padding-top: 5px;
+    }
+
+    #header {
+      height: 75px;
+      border-bottom: 1px solid #000;
+    }
+
+    h1 {
+      margin: 0;
+      padding: 0;
+      padding-top: 10px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: normal;
+      line-height: 25px;
+      vertical-align: middle;
+    }
+
+    h1 img {
+      width: 30px;
+      height: 30px;
+      display: block;
+      margin: auto;
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+    }
+
+    #content {
+      padding-top: 15px;
+      font-size: 0.9em;
+    }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      li {
+        display: inline-block;
+        margin-left: 6px;
+      }
+      h1 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="wrapper">
+      <div id="header">
+        <h1><img src="logo_bw.png">The Other Filter</h1>
+      </div>
+      <div id="content">
+        <ul></ul>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    var getJSON = function(url) {
+      return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('get', url, true);
+        xhr.responseType = 'json';
+        xhr.onload = function() {
+          var status = xhr.status;
+          if (status == 200) {
+            resolve(xhr.response);
+          } else {
+            reject(status);
+          }
+        };
+      xhr.send();
+      });
+    };
+      var $ul = document.querySelector('ul');
+      getJSON('http://nodejs-theotherfilter.rhcloud.com:3000/words').then(function(data) {
+        data.forEach(function (val) {
+          if (!val) {
+            return;
+          }
+          var $li = document.createElement('li');
+          var text = document.createTextNode(val);
+          $li.appendChild(text);
+          $ul.appendChild($li);
+        });
+      }, function(status) {
+        alert('Something went wrong.');
+      });
+    </script>
+
+  </body>
+</html>
